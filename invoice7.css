@@ -1,0 +1,800 @@
+/* invoice6.css */
+
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #7c5dfa; /* Purple */
+    --primary-color-light: #9277ff;
+    --secondary-color: #1e2139; /* Dark Blue/Almost Black */
+    --secondary-color-light: #252945;
+    --tertiary-color: #dfe3fa; /* Light Greyish Blue */
+    --quaternary-color: #888eb0; /* Medium Grey */
+    --text-color-primary: #0c0e16; /* Very Dark Blue/Black */
+    --text-color-secondary: #888eb0; /* Medium Grey */
+    --text-color-light: #ffffff;
+    --border-color: #dfe3fa;
+    --danger-color: #ec5757; /* Red */
+    --danger-color-light: #ff9797;
+    --success-color: #33d69f; /* Green */
+    --pending-color: #ff8f00; /* Orange */
+    --draft-color: #373b53; /* Dark Grey for Draft status */
+  
+    --body-bg: #f8f8fb;
+    --sidebar-bg: #373b53; /* Darker than secondary for contrast */
+    --modal-bg: #ffffff;
+    --form-input-bg: #ffffff;
+    --form-input-border: #dfe3fa;
+    --form-input-focus-border: var(--primary-color);
+    --button-bg-secondary: #f9fafe;
+    --button-text-secondary: #7e88c3;
+    --dropdown-bg: #ffffff;
+    --dropdown-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
+    --invoice-item-bg: #ffffff;
+    --invoice-item-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.1);
+  
+    --font-family: "League Spartan", sans-serif; /* Example font, ensure it's linked in HTML or use a common one */
+    --border-radius: 8px;
+    --border-radius-lg: 20px;
+    --input-padding: 0.8rem 1rem;
+    --button-padding: 0.8rem 1.5rem;
+    --transition-speed: 0.3s ease;
+  }
+  
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    background-color: var(--body-bg);
+    color: var(--text-color-primary);
+    line-height: 1.6;
+    display: flex; /* For sidebar and main content layout */
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll on body */
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+  }
+  
+  a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+  
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  button {
+    font-family: var(--font-family);
+    cursor: pointer;
+    border: none;
+    border-radius: var(--border-radius-lg); /* Default rounded buttons */
+    padding: var(--button-padding);
+    font-weight: 700;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+  }
+  
+  input, select {
+    font-family: var(--font-family);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--form-input-border);
+    padding: var(--input-padding);
+    width: 100%;
+    background-color: var(--form-input-bg);
+    color: var(--text-color-primary);
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--form-input-focus-border);
+    box-shadow: 0 0 0 1px var(--form-input-focus-border);
+  }
+  
+  /* --- Main Layout --- */
+  .main-content {
+    display: flex;
+    flex-direction: row; /* Sidebar on left, content on right */
+    width: 100%;
+    position: relative; /* For modal positioning */
+  }
+  
+  .sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--text-color-light);
+    width: 100px; /* Fixed width sidebar */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: fixed; /* Keep sidebar fixed */
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    border-top-right-radius: var(--border-radius-lg);
+    border-bottom-right-radius: var(--border-radius-lg);
+  }
+  
+  .logo-container {
+    margin-bottom: auto; /* Pushes theme switcher and profile to bottom */
+    width: 50px; /* Adjust as needed */
+    height: 50px;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+  }
+  
+  .img-logo {
+      width: 30px; /* Adjust size of logo image itself */
+      height: auto;
+  }
+  
+  .theme-switcher {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .theme-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--quaternary-color);
+    padding: 5px;
+    cursor: pointer;
+  }
+  .theme-toggle-btn:hover .moon-icon,
+  .theme-toggle-btn:hover .sun-icon {
+    color: var(--tertiary-color);
+  }
+  .theme-toggle-btn .sun-icon { /* Initially hidden by HTML style */
+      color: var(--quaternary-color); /* Ensure it has a color when visible */
+  }
+  
+  
+  .sidebar-divider {
+    width: 80%;
+    border: none;
+    border-top: 1px solid var(--quaternary-color);
+    margin: 20px 0;
+  }
+  
+  .profile-container {
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .content-area {
+    flex-grow: 1;
+    padding: 30px 40px;
+    margin-left: 100px; /* Account for fixed sidebar */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: calc(100% - 100px); /* Ensure it takes remaining width */
+    max-width: 900px; /* Max width for content for better readability */
+    margin: 0 auto 0 100px; /* Centering content area with sidebar */
+  }
+  
+  /* --- Content Header --- */
+  .content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 20px;
+  }
+  
+  .invoice-summary h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .invoice-summary p {
+    color: var(--text-color-secondary);
+  }
+  
+  .actions-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .filter-invoice-wrapper {
+    position: relative;
+  }
+  
+  .filter-toggle-btn {
+    background: none;
+    border: none;
+    color: var(--text-color-primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0; /* Remove default button padding */
+  }
+  
+  .filter-toggle-btn svg {
+    color: var(--primary-color);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px); /* Position below the toggle button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--dropdown-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--dropdown-shadow);
+    padding: 15px;
+    width: 180px;
+    z-index: 100;
+    display: none; /* Hidden by default, JS will toggle */
+  }
+  
+  .dropdown-menu.open { /* Class to be added by JS */
+      display: block;
+  }
+  
+  .dropdown-options-list {
+    list-style: none;
+  }
+  
+  .dropdown-options-list li {
+    margin-bottom: 10px;
+  }
+  .dropdown-options-list li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .dropdown-options-list label {
+    margin-left: 10px;
+    color: var(--text-color-primary);
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .dropdown-li-checkbox {
+      width: auto; /* Override default 100% width */
+      accent-color: var(--primary-color); /* Style checkbox color */
+  }
+  
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+    padding: 0.6rem 0.8rem; /* Slightly smaller padding for this button */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-primary svg {
+      background-color: white;
+      color: var(--primary-color);
+      border-radius: 50%;
+      padding: 8px; /* Padding inside the SVG circle */
+      width: 32px; /* Fixed size for the circle */
+      height: 32px;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--primary-color-light);
+  }
+  
+  /* --- Invoice List --- */
+  .invoice-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .invoice-item {
+    background-color: var(--invoice-item-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--invoice-item-shadow);
+    padding: 15px 25px;
+    display: grid; /* Using grid for better alignment */
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive columns */
+    align-items: center;
+    gap: 15px; /* Gap between grid cells */
+    border: 1px solid transparent;
+    transition: border-color var(--transition-speed);
+  }
+  
+  .invoice-item:hover {
+    border-color: var(--primary-color);
+  }
+  
+  .invoice-item-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px; /* Space between ID, due date, client name */
+      grid-column: span 2; /* Main content takes more space initially */
+  }
+  .invoice-item-main .invoice-id {
+    font-weight: 700;
+    color: var(--text-color-primary);
+  }
+  .invoice-item-main .invoice-id::before {
+      content: "#";
+      color: var(--primary-color);
+  }
+  
+  .invoice-item-main .invoice-due-date,
+  .invoice-item-main .invoice-client-name {
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .invoice-item-aside {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; /* Align amount and status to the right */
+      gap: 8px;
+      grid-column: span 2; /* Actions take space */
+      text-align: right;
+  }
+  
+  .invoice-item-aside .invoice-amount {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-color-primary);
+  }
+  
+  .status-badge {
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: inline-flex; /* To align icon and text */
+    align-items: center;
+    gap: 8px;
+    min-width: 100px; /* Minimum width for consistency */
+    justify-content: center;
+  }
+  
+  .status-badge svg {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .status-paid {
+    background-color: rgba(51, 214, 159, 0.1); /* Light green */
+    color: var(--success-color);
+  }
+  .status-paid svg {
+    fill: var(--success-color);
+  }
+  
+  .status-pending {
+    background-color: rgba(255, 143, 0, 0.1); /* Light orange */
+    color: var(--pending-color);
+  }
+  .status-pending svg {
+    fill: var(--pending-color);
+  }
+  
+  .status-draft { /* You might add a draft status */
+    background-color: rgba(55, 59, 83, 0.1); /* Light draft color */
+    color: var(--draft-color);
+  }
+  .status-draft svg {
+    fill: var(--draft-color);
+  }
+  .status-sent { /* You might add a sent status */
+    background-color: rgba(124, 93, 250, 0.1); /* Light primary color */
+    color: var(--primary-color);
+  }
+  .status-sent svg {
+    fill: var(--primary-color);
+  }
+  
+  .invoice-item-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px; /* Space above action buttons */
+  }
+  
+  .edit-invoice-btn, .delete-invoice-btn {
+      background: none;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      border-radius: var(--border-radius);
+  }
+  .edit-invoice-btn {
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color-light);
+  }
+  .edit-invoice-btn:hover {
+      background-color: var(--primary-color-light);
+      color: white;
+  }
+  .delete-invoice-btn {
+      color: var(--danger-color);
+      border: 1px solid var(--danger-color-light);
+  }
+  .delete-invoice-btn:hover {
+      background-color: var(--danger-color-light);
+      color: white;
+  }
+  
+  /* --- Modal & Form Styling --- */
+  .modal {
+    position: fixed;
+    left: 100px; /* Start off-screen or hidden, to slide in from left */
+    top: 0;
+    width: clamp(300px, 60%, 700px); /* Responsive width */
+    height: 100vh;
+    background-color: var(--modal-bg);
+    box-shadow: 10px 0 25px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    overflow-y: auto;
+    z-index: 1001; /* Above sidebar */
+    transform: translateX(-100%); /* Initially hidden */
+    transition: transform 0.4s ease-in-out;
+    border-top-right-radius: var(--border-radius-lg);
+    border-bottom-right-radius: var(--border-radius-lg);
+  }
+  
+  .modal.open {
+    transform: translateX(0); /* Slide in */
+  }
+  
+  .form-title {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
+  
+  #invoice_form fieldset {
+    border: none;
+    margin-bottom: 30px;
+  }
+  
+  .form-section-legend {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .label-primary, .label-secondary {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--text-color-secondary);
+    font-weight: 500;
+  }
+  
+  .address-details-group, .payment-details-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+  }
+  
+  .item-list-title {
+    font-size: 1.3rem;
+    color: #777;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  /* Styling for dynamically added item rows (example) */
+  .new-items-container .item-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1.5fr 1.5fr auto; /* Item Name, Qty, Price, Total, Delete */
+      gap: 15px;
+      align-items: flex-end; /* Align items to bottom for better label-input sync */
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed var(--border-color);
+  }
+  .new-items-container .item-row:last-child {
+      border-bottom: none;
+  }
+  
+  .item-row .form-group {
+      margin-bottom: 0; /* Remove default margin for items in a row */
+  }
+  
+  .item-row label {
+      font-size: 0.8rem;
+      color: var(--text-color-secondary);
+  }
+  
+  .item-row input[type="number"],
+  .item-row input[type="text"] { /* Price might be text for currency symbols */
+      padding: 0.6rem 0.8rem;
+  }
+  
+  .item-total-value {
+      display: block;
+      padding: 0.6rem 0;
+      color: var(--text-color-secondary);
+      font-weight: 700;
+  }
+  
+  .delete-item-row-btn {
+      background: none;
+      border: none;
+      color: var(--danger-color);
+      padding: 0.6rem; /* Make clickable area decent */
+      margin-bottom: 5px; /* Align with input bottom */
+  }
+  .delete-item-row-btn svg {
+      width: 20px;
+      height: 20px;
+  }
+  .delete-item-row-btn:hover {
+      color: var(--danger-color-light);
+  }
+  
+  
+  .btn-add-item {
+    background-color: var(--button-bg-secondary);
+    color: var(--button-text-secondary);
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+  }
+  .btn-add-item:hover {
+    background-color: var(--tertiary-color);
+  }
+  .btn-add-item svg {
+      margin-right: 8px;
+      fill: var(--button-text-secondary);
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color); /* Optional: separator */
+    background-color: var(--modal-bg); /* Ensure it's above content if sticky */
+    position: sticky;
+    bottom: 0;
+    padding-bottom: 20px; /* Padding for sticky footer */
+  }
+  
+  .btn-discard {
+    background-color: var(--button-bg-secondary);
+    color: var(--button-text-secondary);
+    border: 1px solid var(--border-color);
+  }
+  .btn-discard:hover {
+    background-color: var(--tertiary-color);
+  }
+  
+  .draft-send-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-draft {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+  }
+  .btn-draft:hover {
+    background-color: var(--secondary-color-light);
+  }
+  
+  .btn-send {
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+  }
+  .btn-send:hover {
+    background-color: var(--primary-color-light);
+  }
+  
+  
+  /* --- Responsive Adjustments --- */
+  @media (max-width: 1024px) {
+      .content-area {
+          padding: 20px;
+          max-width: 100%; /* Allow content to use more space */
+      }
+  
+      .invoice-item {
+          grid-template-columns: 1fr; /* Stack elements on smaller tablets */
+          padding: 20px;
+      }
+      .invoice-item-main, .invoice-item-aside {
+          grid-column: span 1; /* Reset span */
+          text-align: left; /* Align all text left for stacked view */
+          align-items: flex-start;
+      }
+      .invoice-item-aside .invoice-amount {
+          margin-top: 10px;
+      }
+      .invoice-item-actions {
+          justify-content: flex-start; /* Align buttons left */
+          width: 100%;
+      }
+  }
+  
+  
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column; /* Stack sidebar above content */
+    }
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      height: 80px; /* Fixed height for top bar */
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: fixed; /* Keep it at the top */
+      top: 0;
+      left: 0;
+      right: 0;
+      border-radius: 0; /* Remove side radius */
+      border-bottom: 1px solid var(--secondary-color-light);
+    }
+    .logo-container {
+      margin-bottom: 0;
+      margin-right: auto; /* Pushes other items to the right */
+    }
+    .theme-switcher {
+      flex-direction: row;
+      margin-bottom: 0;
+      gap: 20px;
+    }
+    .sidebar-divider {
+      display: none; /* Hide divider on mobile */
+    }
+    .profile-container {
+      margin-bottom: 0;
+    }
+  
+    .content-area {
+      margin-left: 0;
+      padding-top: 100px; /* Account for fixed sidebar height */
+      width: 100%;
+    }
+  
+    .content-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .actions-toolbar {
+      width: 100%;
+      justify-content: space-between; /* Space out filter and new button */
+    }
+    .btn-primary {
+      padding: 0.5rem 0.6rem; /* Smaller button on mobile */
+    }
+    .btn-primary svg {
+      padding: 6px;
+      width: 28px;
+      height: 28px;
+    }
+   
+  
+  
+    .modal {
+      left: 0; /* Modal takes full width or slides from top/bottom */
+      width: 100%;
+      border-radius: 0;
+      border-top-left-radius: var(--border-radius-lg); /* Keep some radius if sliding from bottom */
+      border-top-right-radius: var(--border-radius-lg);
+      /* Consider transform: translateY(100%) for sliding from bottom */
+    }
+  
+    .address-details-group, .payment-details-group {
+      grid-template-columns: 1fr; /* Stack address fields */
+    }
+    .new-items-container .item-row {
+      grid-template-columns: 1fr; /* Stack item fields */
+      gap: 10px;
+    }
+    .item-row .delete-item-row-btn {
+        justify-self: flex-end; /* Move delete button to the right in stacked view */
+        margin-bottom: 0;
+    }
+    .item-total-value {
+        text-align: left;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+      gap: 15px;
+    }
+    .draft-send-actions {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Make draft/send buttons equal width */
+    }
+    .btn-discard {
+        width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+      .content-area {
+          padding: 15px;
+          padding-top: 95px; /* Adjust if sidebar height changed */
+      }
+      .invoice-summary h1 {
+          font-size: 1.8rem;
+      }
+      .actions-toolbar {
+          gap: 10px; /* Reduce gap */
+      }
+      .filter-toggle-btn .filter-text {
+          display: none; /* Hide "Filter by status" text, show only icon */
+      }
+      .filter-toggle-btn svg {
+          margin-right: 0;
+      }
+      .dropdown-menu {
+          left: auto; /* Adjust dropdown position for icon-only button */
+          right: 0;
+          transform: translateX(0);
+      }
+  
+      .invoice-item {
+          padding: 15px;
+      }
+      .invoice-item-main .invoice-id {
+          font-size: 0.9rem;
+      }
+      .invoice-item-aside .invoice-amount {
+          font-size: 1rem;
+      }
+      .status-badge {
+          min-width: 90px;
+          padding: 6px 10px;
+          font-size: 0.75rem;
+      }
+  
+      .modal {
+          padding: 20px;
+      }
+      .form-title {
+          font-size: 1.5rem;
+      }
+      .form-actions {
+          padding: 15px;
+      }
+      .draft-send-actions button {
+          padding: 0.7rem; /* Slightly smaller buttons */
+      }
+  }
+  
+  /* Utility class for visually hidden elements (for accessibility) */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
